@@ -230,6 +230,7 @@
         }
         .tag-pessoa.compartilhado { background-color: rgba(180, 168, 255, 0.2); color: #7c4dff; }
         .tag-pessoa.individual { background-color: rgba(0,0,0,0.06); color: var(--txt-muted); }
+        .tag-pessoa.credito { background-color: rgba(134, 207, 134, 0.2); color: #3f9142; }
 
         /* COLUNAS BENTO */
         .bento-card { background-color: var(--bg-card-main); border-radius: var(--radius-main); padding: 32px; display: flex; flex-direction: column; justify-content: space-between; min-height: 400px; height: 100%; }
@@ -461,7 +462,7 @@
         <div class="modal-box largo">
             <h3>Gerenciar Categorias</h3>
             <p style="font-size: 13px; color: var(--txt-muted); margin-bottom: 16px; line-height: 1.4;">
-                Categorias <strong>Compartilhadas</strong> dividem o valor pela % definida do criador. Categorias <strong>Individuais</strong> ficam 100% retidas na coluna de origem.
+                <strong>Débito Individual</strong>: soma 100% como dívida de quem lançou. <strong>Crédito Individual</strong>: abate 100% da dívida de quem lançou. <strong>Débito/Crédito Compartilhado</strong>: quem lançou pagou o valor inteiro — a fatia da outra pessoa (definida pela % abaixo) entra como dívida dela.
             </p>
 
             <div id="listaCategoriasForm"></div>
@@ -629,13 +630,27 @@
         }
 
         // ===================== RENDER LISTAS INDEPENDENTES =====================
+        const LABELS_TIPO_CATEGORIA = {
+            debito_individual: 'débito individual',
+            debito_compartilhado: 'débito compartilhado',
+            credito_individual: 'crédito individual',
+            credito_compartilhado: 'crédito compartilhado'
+        };
+        // Compatibilidade com dados antigos (categorias criadas antes da v2)
+        function normalizarTipoCategoria(tipo) {
+            if (tipo === 'compartilhada') return 'debito_compartilhado';
+            if (tipo === 'individual') return 'debito_individual';
+            return tipo || 'debito_individual';
+        }
+
         function renderSelectCategoria(valorSelecionado) {
             const select = document.getElementById('selectCategoriaLancamento');
             select.innerHTML = '';
             state.categorias.forEach(cat => {
                 const opt = document.createElement('option');
                 opt.value = cat.id;
-                opt.text = cat.nome + (cat.tipo === 'individual' ? ' (individual)' : ' (compartilhada)');
+                const tipo = normalizarTipoCategoria(cat.tipo);
+                opt.text = `${cat.nome} (${LABELS_TIPO_CATEGORIA[tipo]})`;
                 select.appendChild(opt);
             });
             if (valorSelecionado) select.value = valorSelecionado;
@@ -650,7 +665,14 @@
             let htmlT = '', htmlE = '', subT = 0, subE = 0;
 
             const moldarItem = (item, cat) => {
-                const tag = cat.tipo === 'individual' ? '<span class="tag-pessoa individual">Individual</span>' : '<span class="tag-pessoa compartilhado">Compartilhado</span>';
+                const tipo = normalizarTipoCategoria(cat.tipo);
+                const tagsPorTipo = {
+                    debito_individual: '<span class="tag-pessoa individual">Débito Individual</span>',
+                    debito_compartilhado: '<span class="tag-pessoa compartilhado">Débito Compartilhado</span>',
+                    credito_individual: '<span class="tag-pessoa individual credito">Crédito Individual</span>',
+                    credito_compartilhado: '<span class="tag-pessoa compartilhado credito">Crédito Compartilhado</span>'
+                };
+                const tag = tagsPorTipo[tipo] || tagsPorTipo.debito_individual;
                 return `<div class="sub-card-item" data-id="${item.id}" onclick="editarLancamento(this)" style="border-left-color: ${cat.cor};">
                     <div class="item-detalhes">
                         <div class="item-nome">${escapeHtml(item.nome)}</div>
@@ -661,7 +683,7 @@
             };
 
             itens.forEach(item => {
-                const cat = categoriaPorId(item.categoriaId) || { nome: 'Geral', cor: '#6e7570', tipo: 'individual' };
+                const cat = categoriaPorId(item.categoriaId) || { nome: 'Geral', cor: '#6e7570', tipo: 'debito_individual' };
                 if (item.donoColuna === 'Terence') {
                     htmlT += moldarItem(item, cat);
                     subT += item.valor;
@@ -698,8 +720,9 @@
             colunaAlvoCriacao = item.donoColuna;
             
             const cat = categoriaPorId(item.categoriaId);
+            const tipoCat = cat ? normalizarTipoCategoria(cat.tipo) : 'debito_individual';
             let valorExibir = item.valor;
-            if (cat && cat.tipo === 'compartilhada' && item.valorBrutoOrigem) {
+            if ((tipoCat === 'debito_compartilhado' || tipoCat === 'credito_compartilhado') && item.valorBrutoOrigem) {
                 valorExibir = item.valorBrutoOrigem;
             }
 
@@ -749,28 +772,46 @@
         }
 
         // ===================== MATEMÁTICA DE CONCILIAÇÃO FINAL =====================
+        // Modelo (v2):
+        // - Débito Individual: soma 100% como dívida de quem lançou.
+        // - Crédito Individual: abate (reduz) 100% da dívida de quem lançou.
+        // - Débito/Crédito Compartilhado: quem lançou pagou o valor inteiro; a fatia
+        //   da própria pessoa é ignorada (já é dela mesma); a fatia da outra pessoa
+        //   entra como dívida dela. Matematicamente os dois calculam igual — a
+        //   diferença entre eles é só de rótulo/organização.
         function recalcularConciliacao() {
             const itens = lancamentosDoMes();
-            let quemPagouOQue = { Terence: 0, Eloa: 0 };
-            let responsabilidadeReal = { Terence: 0, Eloa: 0 };
+            let transferEloaParaTerence = 0; // > 0: Elóa deve a Terence. < 0: Terence deve a Elóa.
 
             itens.forEach(item => {
                 const cat = categoriaPorId(item.categoriaId);
-                quemPagouOQue[item.quemCriou] += item.valor;
-                responsabilidadeReal[item.donoColuna] += item.valor;
+                const tipo = cat ? normalizarTipoCategoria(cat.tipo) : 'debito_individual';
+
+                if (tipo === 'debito_individual') {
+                    transferEloaParaTerence += (item.donoColuna === 'Eloa') ? item.valor : -item.valor;
+                } else if (tipo === 'credito_individual') {
+                    transferEloaParaTerence += (item.donoColuna === 'Eloa') ? -item.valor : item.valor;
+                } else {
+                    // debito_compartilhado / credito_compartilhado
+                    // A linha em que donoColuna === quemCriou é a fatia da própria
+                    // pessoa que pagou — ignorada. Só a fatia da outra pessoa conta.
+                    if (item.donoColuna !== item.quemCriou) {
+                        transferEloaParaTerence += (item.donoColuna === 'Eloa') ? item.valor : -item.valor;
+                    }
+                }
             });
 
-            const saldoFinal = quemPagouOQue.Terence - responsabilidadeReal.Terence;
+            const saldoFinal = transferEloaParaTerence;
 
             const detLabel = document.getElementById('detalheSaldo');
             const resValor = document.getElementById('resultadoDiferenca');
 
             if (saldoFinal > 0.005) {
-                detLabel.innerHTML = `Terence pagou mais do que devia. Elóa transfere a diferença.<br><b>Chave Pix: ${PIX_TERENCE}</b>`;
+                detLabel.innerHTML = `Elóa deve transferir a diferença para Terence.<br><b>Chave Pix: ${PIX_TERENCE}</b>`;
                 resValor.innerText = formatValor(saldoFinal);
                 resValor.style.color = '#86cf86';
             } else if (saldoFinal < -0.005) {
-                detLabel.innerText = 'Elóa pagou mais do que devia. Terence transfere a diferença para equilibrar.';
+                detLabel.innerText = 'Terence deve transferir a diferença para Elóa.';
                 resValor.innerText = formatValor(Math.abs(saldoFinal));
                 resValor.style.color = '#e67e7e';
             } else {
@@ -783,22 +824,25 @@
         // ===================== GERENCIAR CATEGORIAS MODAL =====================
         function linhaCategoriaHtml(cat) {
             const id = cat.id || ('novo-' + Math.random().toString(36).slice(2, 9));
-            const ehIndividual = cat.tipo === 'individual';
+            const tipo = normalizarTipoCategoria(cat.tipo);
+            const ehCompartilhado = tipo === 'debito_compartilhado' || tipo === 'credito_compartilhado';
             return `<div class="categoria-row" data-id="${id}" data-original-id="${cat.id || ''}">
                 <input type="color" class="cat-cor" value="${cat.cor || '#b4a8ff'}">
                 <input type="text" class="cat-nome" value="${escapeHtml(cat.nome || '')}" placeholder="Nome da categoria">
-                <select class="cat-tipo" onchange="this.nextElementSibling.style.visibility = (this.value==='individual'?'hidden':'visible')">
-                    <option value="compartilhada" ${!ehIndividual ? 'selected' : ''}>Compartilhada</option>
-                    <option value="individual" ${ehIndividual ? 'selected' : ''}>Individual</option>
+                <select class="cat-tipo" onchange="const compartilhado = (this.value==='debito_compartilhado'||this.value==='credito_compartilhado'); this.nextElementSibling.style.visibility = compartilhado ? 'visible' : 'hidden'; this.nextElementSibling.nextElementSibling.style.visibility = compartilhado ? 'visible' : 'hidden';">
+                    <option value="debito_individual" ${tipo === 'debito_individual' ? 'selected' : ''}>Débito Individual</option>
+                    <option value="debito_compartilhado" ${tipo === 'debito_compartilhado' ? 'selected' : ''}>Débito Compartilhado</option>
+                    <option value="credito_individual" ${tipo === 'credito_individual' ? 'selected' : ''}>Crédito Individual</option>
+                    <option value="credito_compartilhado" ${tipo === 'credito_compartilhado' ? 'selected' : ''}>Crédito Compartilhado</option>
                 </select>
-                <input type="number" class="cat-percentual" min="0" max="100" value="${cat.percentualTerence != null ? cat.percentualTerence : 50}" style="${ehIndividual ? 'visibility:hidden;' : ''}">
-                <span class="pct-label" style="${ehIndividual ? 'visibility:hidden;' : ''}">% Proporção</span>
+                <input type="number" class="cat-percentual" min="0" max="100" value="${cat.percentualTerence != null ? cat.percentualTerence : 50}" style="${!ehCompartilhado ? 'visibility:hidden;' : ''}">
+                <span class="pct-label" style="${!ehCompartilhado ? 'visibility:hidden;' : ''}">% Proporção</span>
                 <button class="btn-remover-categoria" onclick="this.closest('.categoria-row').remove()">×</button>
             </div>`;
         }
 
         function adicionarLinhaCategoria() {
-            document.getElementById('listaCategoriasForm').insertAdjacentHTML('beforeend', linhaCategoriaHtml({ tipo: 'compartilhada', percentualTerence: 50, cor: '#b4a8ff' }));
+            document.getElementById('listaCategoriasForm').insertAdjacentHTML('beforeend', linhaCategoriaHtml({ tipo: 'debito_compartilhado', percentualTerence: 50, cor: '#b4a8ff' }));
         }
 
         function openModalCategorias() {
