@@ -384,7 +384,7 @@
             <div class="bento-card">
                 <div>
                     <div class="card-header">
-                        <h2>Lançamentos Elóa</h2>
+                        <h2>Lançamentos Eloá</h2>
                         <div style="display: flex; gap: 8px;">
                             <button class="btn-action-icon" onclick="openModalLancamento('Eloa')">+</button>
                         </div>
@@ -868,18 +868,19 @@
         // ===================== WHATSAPP COMPILADOR =====================
         function enviarWhatsapp() {
             const mesNome = NOMES_MESES_COMPLETOS[mesVisualizado.mes];
-            const itens = lancamentosDoMes();
-            let msg = `📋 *Resumo Financeiro — ${mesNome}/${mesVisualizado.ano}* 📋\n\n`;
+            const itens = lancamentosDoMes().filter(i => i.donoColuna === 'Eloa');
+            let msg = `📋 *Despesas Eloá — ${mesNome}/${mesVisualizado.ano}* 📋\n\n`;
 
-            msg += `*PAGO POR TERENCE:*\n`;
-            itens.filter(i => i.quemCriou === 'Terence').forEach(i => msg += `• ${i.nome}: ${formatValor(i.valor)} (${i.donoColuna === 'Terence'?'pessoal':'compartilhado'})\n`);
-            
-            msg += `\n*PAGO POR ELÓA:*\n`;
-            itens.filter(i => i.quemCriou === 'Eloa').forEach(i => msg += `• ${i.nome}: ${formatValor(i.valor)} (${i.donoColuna === 'Eloa'?'pessoal':'compartilhado'})\n`);
-
-            const resValor = document.getElementById('resultadoDiferenca').innerText;
-            const detLabel = document.getElementById('detalheSaldo').innerText.split('\n')[0];
-            msg += `\n💰 *CONCILIAÇÃO FINAL:* ${resValor}\n_${detLabel}_`;
+            itens.forEach(i => {
+                const cat = categoriaPorId(i.categoriaId);
+                const tipo = cat ? normalizarTipoCategoria(cat.tipo) : 'debito_individual';
+                const pessoalOuCompartilhado = (i.donoColuna === i.quemCriou) ? 'pessoal' : 'compartilhado';
+                let linha = `• ${i.nome} = ${formatValor(i.valor)} (${pessoalOuCompartilhado})`;
+                if (tipo === 'credito_compartilhado') {
+                    linha += ' (Não atribuído na soma final)';
+                }
+                msg += linha + '\n';
+            });
 
             window.open(`https://wa.me/${NUMERO_WHATSAPP_ELOA}?text=${encodeURIComponent(msg)}`, '_blank');
         }
