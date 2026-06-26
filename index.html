@@ -228,8 +228,7 @@
             letter-spacing: 0.4px;
             vertical-align: middle;
         }
-        .tag-pessoa.terence { background-color: rgba(129, 212, 250, 0.25); color: #0277bd; }
-        .tag-pessoa.eloa { background-color: rgba(244, 143, 177, 0.25); color: #ad1457; }
+        .tag-pessoa.compartilhado { background-color: rgba(180, 168, 255, 0.2); color: #7c4dff; }
         .tag-pessoa.individual { background-color: rgba(0,0,0,0.06); color: var(--txt-muted); }
 
         /* COLUNAS BENTO */
@@ -257,8 +256,6 @@
             transform: translateY(-1px);
             box-shadow: 0 4px 12px rgba(0,0,0,0.04);
         }
-        .sub-card-item.nao-clicavel { cursor: default; }
-        .sub-card-item.nao-clicavel:hover { transform: none; box-shadow: none; }
         .item-detalhes { pointer-events: none; }
         .item-detalhes .item-nome { font-weight: 600; font-size: 14px; color: var(--txt-dark); }
         .item-detalhes .item-meta { font-size: 11px; color: var(--txt-muted); }
@@ -266,10 +263,6 @@
 
         .card-totalizador { margin-top: 16px; padding: 16px 12px 0 12px; border-top: 1px dashed #d5dad4; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
         .card-totalizador .total-valor { font-size: 18px; font-weight: 700; text-align: right; }
-
-        .bloco-individuais { margin-top: 18px; padding-top: 16px; border-top: 1px dashed #d5dad4; }
-        .bloco-individuais .titulo { font-size: 12px; font-weight: 700; color: var(--txt-muted); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 10px; }
-        .linha-individual { display: flex; justify-content: space-between; font-size: 13px; padding: 4px 0; }
 
         /* BOTÕES E AÇÕES CENTRALIZADAS */
         .barra-botoes { display: flex; justify-content: center; gap: 12px; margin-top: 12px; width: 100%; }
@@ -297,23 +290,6 @@
             background-color: var(--bg-white); font-size: 15px; outline: none; width: 100%;
         }
 
-        .toggle-pessoa-container { display: flex; gap: 8px; }
-        .btn-toggle-pessoa {
-            flex: 1; padding: 12px; border-radius: var(--radius-sub); border: 1px solid #d5dad4;
-            background-color: var(--bg-white); font-size: 14px; font-weight: 600; cursor: pointer; outline: none;
-            transition: all 0.15s ease;
-        }
-        .btn-toggle-pessoa.active.terence { background-color: var(--color-terence); border-color: var(--color-terence); color: #023047; }
-        .btn-toggle-pessoa.active.eloa { background-color: var(--color-eloa); border-color: var(--color-eloa); color: #5b0e2c; }
-
-        .color-picker-container { display: flex; align-items: center; gap: 12px; margin-top: 4px; }
-        .color-picker-container input[type="color"] {
-            -webkit-appearance: none; border: none; width: 34px; height: 34px;
-            border-radius: 50%; cursor: pointer; padding: 0; background: none; flex-shrink: 0;
-        }
-        .color-picker-container input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
-        .color-picker-container input[type="color"]::-webkit-color-swatch { border: 1px solid #d5dad4; border-radius: 50%; }
-
         .modal-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px; }
         .btn-modal { padding: 12px 20px; border-radius: var(--radius-pill); border: none; font-weight: 600; cursor: pointer; font-size: 14px; outline: none; }
         .btn-modal.salvar { background-color: var(--txt-dark); color: var(--txt-light); }
@@ -321,48 +297,23 @@
         .btn-modal.excluir { background-color: transparent; color: #c0392b; border: 1px solid rgba(192, 57, 43, 0.3); margin-right: auto; }
         .btn-modal.excluir:hover { background-color: rgba(192, 57, 43, 0.08); }
 
-        /* LINHA DE CATEGORIA NO MODAL DE GERENCIAMENTO */
-        .categoria-row {
-            display: flex; gap: 8px; align-items: center; margin-bottom: 10px;
-            padding: 10px; background: var(--bg-white); border-radius: var(--radius-sub);
-            flex-wrap: wrap;
-        }
+        /* LINHA DE CATEGORIA */
+        .categoria-row { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; padding: 10px; background: var(--bg-white); border-radius: var(--radius-sub); flex-wrap: wrap; }
         .categoria-row input[type="text"] { flex: 1 1 120px; padding: 9px 12px; border-radius: 12px; border: 1px solid #d5dad4; font-size: 13px; outline: none; min-width: 100px; }
         .categoria-row select { padding: 9px 8px; border-radius: 12px; border: 1px solid #d5dad4; font-size: 12px; outline: none; flex: 1 1 110px; }
         .categoria-row input[type="number"] { width: 56px; padding: 9px 6px; border-radius: 12px; border: 1px solid #d5dad4; font-size: 13px; text-align: center; outline: none; }
         .categoria-row .pct-label { font-size: 11px; color: var(--txt-muted); white-space: nowrap; }
-        .btn-remover-categoria {
-            background: transparent; border: none; color: #c0392b; font-size: 18px; font-weight: 700;
-            cursor: pointer; width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0; outline: none;
-        }
+        .btn-remover-categoria { background: transparent; border: none; color: #c0392b; font-size: 18px; font-weight: 700; cursor: pointer; width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0; outline: none; }
         .btn-remover-categoria:hover { background-color: rgba(192, 57, 43, 0.08); }
-        .btn-add-categoria {
-            width: 100%; padding: 12px; border-radius: var(--radius-sub); border: 1px dashed #aab0aa;
-            background: transparent; color: var(--txt-muted); font-weight: 600; cursor: pointer; font-size: 13px;
-            margin-top: 4px; outline: none;
-        }
+        .btn-add-categoria { width: 100%; padding: 12px; border-radius: var(--radius-sub); border: 1px dashed #aab0aa; background: transparent; color: var(--txt-muted); font-weight: 600; cursor: pointer; font-size: 13px; margin-top: 4px; outline: none; }
         .btn-add-categoria:hover { background-color: rgba(0,0,0,0.03); }
 
-        /* LOADING / CONFIG */
-        .loading-overlay {
-            position: fixed; inset: 0; background: rgba(226, 231, 225, 0.85);
-            display: none; align-items: center; justify-content: center; z-index: 999;
-        }
-        .spinner {
-            width: 38px; height: 38px; border-radius: 50%;
-            border: 4px solid rgba(0,0,0,0.1); border-top-color: var(--txt-dark);
-            animation: girar 0.8s linear infinite;
-        }
+        /* LOADING */
+        .loading-overlay { position: fixed; inset: 0; background: rgba(226, 231, 225, 0.85); display: none; align-items: center; justify-content: center; z-index: 999; }
+        .spinner { width: 38px; height: 38px; border-radius: 50%; border: 4px solid rgba(0,0,0,0.1); border-top-color: var(--txt-dark); animation: girar 0.8s linear infinite; }
         @keyframes girar { to { transform: rotate(360deg); } }
 
-        .aviso-config {
-            display: none;
-            max-width: 1280px; margin: 0 auto 20px auto;
-            background-color: #fff3cd; color: #6b5500; border: 1px solid #ffe8a1;
-            padding: 14px 18px; border-radius: 14px; font-size: 14px; line-height: 1.5;
-        }
-        .aviso-config code { background: rgba(0,0,0,0.06); padding: 2px 6px; border-radius: 6px; }
-
+        .aviso-config { display: none; max-width: 1280px; margin: 0 auto 20px auto; background-color: #fff3cd; color: #6b5500; border: 1px solid #ffe8a1; padding: 14px 18px; border-radius: 14px; font-size: 14px; line-height: 1.5; }
         .estado-vazio { font-size: 13px; color: var(--txt-muted); padding: 12px 4px; }
     </style>
 </head>
@@ -373,12 +324,11 @@
     </div>
 
     <div class="aviso-config" id="avisoConfig">
-        ⚠️ Configure a URL da API do Google Apps Script na constante <code>API_URL</code>, no topo do <code>&lt;script&gt;</code>, para os dados carregarem da planilha.
+        ⚠️ Configure a URL da API do Google Apps Script na constante <code>API_URL</code> no script para carregar os dados.
     </div>
 
     <div class="container-app">
         
-        <!-- TIMELINE -->
         <div class="timeline-wrapper">
             <div class="ano-container">
                 <button class="ano-btn" id="btnAno" onclick="toggleAnoDropdown()"><span id="anoSelecionado">2026</span></button>
@@ -411,63 +361,53 @@
             <button class="seta-navegacao" id="setaDir" onclick="scrollTimeline(150)">›</button>
         </div>
 
-        <!-- DASHBOARD -->
         <div class="dashboard">
             
-            <!-- COLUNA 1: LANÇAMENTOS -->
             <div class="bento-card">
                 <div>
                     <div class="card-header">
-                        <h2>Lançamentos</h2>
+                        <h2>Lançamentos Terence</h2>
                         <div style="display: flex; gap: 8px;">
                             <button class="btn-action-icon" onclick="openModalCategorias()" title="Gerenciar categorias" style="font-size: 15px;">⚙</button>
-                            <button class="btn-action-icon" onclick="openModalLancamento()">+</button>
+                            <button class="btn-action-icon" onclick="openModalLancamento('Terence')">+</button>
                         </div>
                     </div>
-                    
-                    <div class="grid-itens" id="listaLancamentosContainer"></div>
+                    <div class="grid-itens" id="listaTerenceContainer"></div>
                 </div>
                 <div class="card-totalizador">
-                    <span class="total-label">Total do mês:</span>
-                    <span class="total-valor" id="totalMes">R$ 0,00</span>
+                    <span class="total-label">Subtotal pago por Terence:</span>
+                    <span class="total-valor" id="totalTerence">R$ 0,00</span>
                 </div>
             </div>
 
-            <!-- COLUNA 2: SALDO -->
             <div class="bento-card">
                 <div>
                     <div class="card-header">
-                        <h2>Saldo</h2>
+                        <h2>Lançamentos Elóa</h2>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn-action-icon" onclick="openModalLancamento('Eloa')">+</button>
+                        </div>
                     </div>
-                    
-                    <div class="grid-itens" id="listaSaldoContainer"></div>
-
-                    <div class="bloco-individuais">
-                        <div class="titulo">Gastos individuais (não entram no saldo)</div>
-                        <div class="linha-individual"><span>Terence</span><span id="totalIndividualTerence">R$ 0,00</span></div>
-                        <div class="linha-individual"><span>Elóa</span><span id="totalIndividualEloa">R$ 0,00</span></div>
-                    </div>
+                    <div class="grid-itens" id="listaEloaContainer"></div>
                 </div>
                 <div class="card-totalizador">
-                    <span class="total-label" id="labelSaldo">Saldo:</span>
-                    <span class="total-valor" id="valorSaldo">R$ 0,00</span>
+                    <span class="total-label">Subtotal pago por Elóa:</span>
+                    <span class="total-valor" id="totalEloa">R$ 0,00</span>
                 </div>
             </div>
 
         </div>
 
-        <!-- BALANÇO E TOTAIS (BARRA INFERIOR COMPACTA) -->
         <div class="card-balanco-horizontal">
             <div class="balanco-info-container">
                 <span class="balanco-title" id="labelParticipacao">Participação no Mês</span>
-                <span class="balanco-label">Total Geral Gasto no Mês</span>
+                <span class="balanco-label" id="detalheSaldo">Calculando conciliação...</span>
             </div>
             <div class="balanco-valor">
-                <span id="totalGeral">R$ 0,00</span>
+                <span id="resultadoDiferenca">R$ 0,00</span>
             </div>
         </div>
 
-        <!-- BARRA CENTRALIZADA DE AÇÕES -->
         <div class="barra-botoes">
             <button class="btn-footer wpp" onclick="enviarWhatsapp()">
                 <svg width="16" height="16" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397 0 12.008 0c3.202.001 6.212 1.249 8.477 3.514 2.266 2.265 3.513 5.274 3.513 8.477 0 6.616-5.337 11.964-11.948 11.964-2.005-.001-3.973-.504-5.713-1.463L0 24zm6.272-4.048c1.654.982 3.511 1.5 5.465 1.5 5.353 0 9.709-4.357 9.712-9.713.001-2.595-1.006-5.033-2.836-6.864C16.83 3.042 14.391 2.034 11.796 2.034c-5.357 0-9.714 4.357-9.717 9.713-.001 1.969.511 3.893 1.481 5.568L2.531 21.4l4.202-1.103zM17.47 15.31c-.308-.154-1.82-.898-2.101-.998-.281-.1-.487-.154-.689.154-.202.308-.783.998-.96 1.198-.177.202-.353.226-.661.073-.308-.154-1.3-.478-2.475-1.527-.915-.815-1.533-1.825-1.713-2.13-.18-.308-.02-.475.134-.628.14-.137.308-.353.462-.53.154-.177.206-.303.308-.507.102-.202.051-.381-.026-.534-.077-.154-.689-1.66-.944-2.274-.249-.599-.503-.517-.689-.527-.178-.008-.381-.01-.583-.01c-.202 0-.53.077-.807.381-.277.308-1.057 1.034-1.057 2.522 0 1.488 1.083 2.922 1.232 3.125.148.202 2.133 3.256 5.168 4.563.72.311 1.282.496 1.72.636.723.23 1.381.198 1.901.12.58-.087 1.82-.743 2.078-1.46.257-.717.257-1.331.18-1.46-.078-.129-.282-.207-.589-.361z"/></svg>
@@ -477,14 +417,13 @@
         </div>
     </div>
 
-    <!-- MODAL 1: NOVA/EDITAR LANÇAMENTO -->
     <div class="modal-overlay" id="modalLancamento">
         <div class="modal-box">
             <h3 id="titleModalLancamento">Novo Lançamento</h3>
             
             <div class="form-group">
                 <label for="inputNomeLancamento">Nome da Despesa</label>
-                <input type="text" id="inputNomeLancamento" placeholder="Ex: Aluguel, Luz, Cartão...">
+                <input type="text" id="inputNomeLancamento" placeholder="Ex: Aluguel, Luz, Mercado...">
             </div>
 
             <div class="form-group">
@@ -493,16 +432,8 @@
             </div>
 
             <div class="form-group">
-                <label for="inputValorLancamento">Valor (R$)</label>
+                <label for="inputValorLancamento">Valor Total (R$)</label>
                 <input type="number" id="inputValorLancamento" placeholder="0,00" step="0.01">
-            </div>
-
-            <div class="form-group">
-                <label>Quem pagou?</label>
-                <div class="toggle-pessoa-container">
-                    <button type="button" class="btn-toggle-pessoa terence" id="btnPessoaTerence" onclick="selecionarPessoaPagamento('Terence')">Terence</button>
-                    <button type="button" class="btn-toggle-pessoa eloa" id="btnPessoaEloa" onclick="selecionarPessoaPagamento('Eloa')">Elóa</button>
-                </div>
             </div>
             
             <div class="modal-actions">
@@ -513,12 +444,11 @@
         </div>
     </div>
 
-    <!-- MODAL 2: GERENCIAR CATEGORIAS -->
     <div class="modal-overlay" id="modalCategorias">
         <div class="modal-box largo">
             <h3>Gerenciar Categorias</h3>
             <p style="font-size: 13px; color: var(--txt-muted); margin-bottom: 16px; line-height: 1.4;">
-                Categorias <strong>Compartilhadas</strong> são divididas pela % definida (Terence / Elóa). Categorias <strong>Individuais</strong> não entram no cálculo do saldo — são só registro de cada um.
+                Categorias <strong>Compartilhadas</strong> dividem o valor pela % definida do criador. Categorias <strong>Individuais</strong> ficam 100% retidas na coluna de origem.
             </p>
 
             <div id="listaCategoriasForm"></div>
@@ -533,37 +463,29 @@
 
     <script>
         // ===================== CONFIGURAÇÃO =====================
-        // Depois de publicar o Apps Script como Web App,  a URL gerada aqui.
         const API_URL = 'https://script.google.com/macros/s/AKfycbwDUrKSHPdn22VRRy-lGXWXqBQ4wD7S6zDT0ygsDvIki_6wCcXYZqr7KGAni3E2AKfoXA/exec';
 
         const NUMERO_WHATSAPP_ELOA = '5554991265796';
-        const PIX_TERENCE = 'terenceagnezi@gmail.com';
+        const PIX_TERENCE = '00129539031';
 
         const NOMES_MESES_COMPLETOS = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
 
-        // ===================== ESTADO GLOBAL (espelho dos dados da planilha) =====================
+        // ===================== ESTADO GLOBAL =====================
         let state = {
-            lancamentos: [],
-            categorias: [],   // array de { id, nome, cor, tipo: 'compartilhada'|'individual', percentualTerence }
+            lancamentos: [], // Estrutura: { id, paiId, nome, categoriaId, valor, quemCriou, donoColuna, anoMes }
+            categorias: [],   
             pagamentos: {}
         };
 
         let cardSendoEditadoId = null;
-        let pessoaSelecionadaModal = 'Terence';
+        let colunaAlvoCriacao = 'Terence'; // Determina de qual lado o "+" foi clicado
 
         const _hoje = new Date();
         let mesVisualizado = { ano: _hoje.getFullYear(), mes: _hoje.getMonth() };
 
         function chaveMesVisualizado() { return `${mesVisualizado.ano}-${mesVisualizado.mes}`; }
-
-        function categoriaPorId(id) {
-            return state.categorias.find(c => String(c.id) === String(id));
-        }
-
-        function lancamentosDoMes() {
-            const chave = chaveMesVisualizado();
-            return state.lancamentos.filter(i => i.anoMes === chave);
-        }
+        function categoriaPorId(id) { return state.categorias.find(c => String(c.id) === String(id)); }
+        function lancamentosDoMes() { return state.lancamentos.filter(i => i.anoMes === chaveMesVisualizado()); }
 
         // ===================== UTILITÁRIOS =====================
         function formatValor(num) {
@@ -582,7 +504,7 @@
             document.getElementById('loadingOverlay').style.display = visivel ? 'flex' : 'none';
         }
 
-        // ===================== COMUNICAÇÃO COM A API (GOOGLE SHEETS VIA APPS SCRIPT) =====================
+        // ===================== COMUNICAÇÃO COM O WEB APP (APPS SCRIPT) =====================
         async function carregarDados() {
             if (!API_URL || API_URL.indexOf('COLE_AQUI') !== -1) {
                 document.getElementById('avisoConfig').style.display = 'block';
@@ -596,16 +518,12 @@
                 aplicarDataset(dados);
             } catch (e) {
                 console.error(e);
-                alert('Não foi possível carregar os dados. Verifique sua conexão com a internet.');
+                alert('Não foi possível carregar os dados.');
             }
             mostrarCarregando(false);
         }
 
         async function enviarMutacao(payload) {
-            if (!API_URL || API_URL.indexOf('COLE_AQUI') !== -1) {
-                alert('Configure a API_URL antes de salvar dados (veja o aviso no topo da página).');
-                return;
-            }
             mostrarCarregando(true);
             try {
                 const resp = await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
@@ -613,7 +531,7 @@
                 aplicarDataset(dados);
             } catch (e) {
                 console.error(e);
-                alert('Erro ao salvar. Verifique sua conexão e tente novamente.');
+                alert('Erro ao sincronizar dados com o Google Sheets.');
             }
             mostrarCarregando(false);
         }
@@ -627,19 +545,18 @@
 
         function renderTudo() {
             atualizarLabelMes();
-            renderLancamentos();
-            renderSelectCategoria();
-            recalcularSaldo();
+            renderListasIndependentes();
+            recalcularConciliacao();
             atualizarTimeline();
             atualizarBotaoConfirmar();
         }
 
         function atualizarLabelMes() {
             document.getElementById('labelParticipacao').innerText =
-                `Participação em ${NOMES_MESES_COMPLETOS[mesVisualizado.mes]}/${mesVisualizado.ano}`;
+                `Conciliação de ${NOMES_MESES_COMPLETOS[mesVisualizado.mes]}/${mesVisualizado.ano}`;
         }
 
-        // ===================== TIMELINE (ANO / MÊS) =====================
+        // ===================== TIMELINE CONTROLES =====================
         function toggleAnoDropdown() { document.getElementById('dropdownAno').classList.toggle('active'); }
         function selecionarAno(ano, elementoClicado) {
             mesVisualizado = { ano: ano, mes: mesVisualizado.mes };
@@ -649,126 +566,101 @@
             elementoClicado.classList.add('active');
             renderTudo();
         }
-
-        function selecionarMes(idx) {
-            mesVisualizado = { ano: mesVisualizado.ano, mes: idx };
-            renderTudo();
-        }
-
+        function selecionarMes(idx) { mesVisualizado = { ano: mesVisualizado.ano, mes: idx }; renderTudo(); }
         const slider = document.getElementById('timelineSlider');
-        const setaEsq = document.getElementById('setaEsq');
-        const setaDir = document.getElementById('setaDir');
-
-        function verificarSetas() {
-            const temCorteHorizontal = slider.scrollWidth > (slider.clientWidth + 5);
-            setaEsq.style.display = temCorteHorizontal ? 'flex' : 'none';
-            setaDir.style.display = temCorteHorizontal ? 'flex' : 'none';
-        }
         function scrollTimeline(val) { slider.scrollLeft += val; }
+        function verificarSetas() {
+            const temCorte = slider.scrollWidth > (slider.clientWidth + 5);
+            document.getElementById('setaEsq').style.display = temCorte ? 'flex' : 'none';
+            document.getElementById('setaDir').style.display = temCorte ? 'flex' : 'none';
+        }
 
         function atualizarTimeline() {
             const hoje = new Date();
-            const anoReal = hoje.getFullYear();
-            const mesReal = hoje.getMonth();
             let botaoFoco = null;
-
             document.querySelectorAll('.aba-mes').forEach(btn => {
                 const idx = parseInt(btn.getAttribute('data-mes'), 10);
                 btn.classList.remove('pago', 'aberto', 'atual', 'futuro', 'selecionado');
-
-                let status;
-                if (mesVisualizado.ano === anoReal && idx === mesReal) {
-                    status = 'atual';
-                } else {
-                    const ehPassado = mesVisualizado.ano < anoReal || (mesVisualizado.ano === anoReal && idx < mesReal);
-                    status = ehPassado ? (state.pagamentos[`${mesVisualizado.ano}-${idx}`] ? 'pago' : 'aberto') : 'futuro';
-                }
+                let status = (mesVisualizado.ano === hoje.getFullYear() && idx === hoje.getMonth()) ? 'atual' : 
+                             (mesVisualizado.ano < hoje.getFullYear() || (mesVisualizado.ano === hoje.getFullYear() && idx < hoje.getMonth())) ? 
+                             (state.pagamentos[`${mesVisualizado.ano}-${idx}`] ? 'pago' : 'aberto') : 'futuro';
                 btn.classList.add(status);
-
-                if (idx === mesVisualizado.mes) {
-                    btn.classList.add('selecionado');
-                    botaoFoco = btn;
-                }
+                if (idx === mesVisualizado.mes) { btn.classList.add('selecionado'); botaoFoco = btn; }
             });
-
             verificarSetas();
             if (botaoFoco) setTimeout(() => botaoFoco.scrollIntoView({ inline: 'center', block: 'nearest' }), 50);
         }
 
         function atualizarBotaoConfirmar() {
             const confirmado = !!state.pagamentos[chaveMesVisualizado()];
-            const btn = document.getElementById('btnConfirmarPagamento');
-            btn.classList.toggle('confirmado', confirmado);
-            btn.innerText = confirmado ? 'Pagamento Confirmado' : 'Confirmar Pagamento';
+            document.getElementById('btnConfirmarPagamento').className = 'btn-footer liquidar' + (confirmado ? ' confirmado' : '');
+            document.getElementById('btnConfirmarPagamento').innerText = confirmado ? 'Pagamento Confirmado' : 'Confirmar Pagamento';
         }
 
         async function toggleConfirmacaoPagamento() {
             const chave = chaveMesVisualizado();
-            const novoValor = !state.pagamentos[chave];
-            await enviarMutacao({ action: 'setPagamento', data: { anoMes: chave, confirmado: novoValor } });
+            await enviarMutacao({ action: 'setPagamento', data: { anoMes: chave, confirmado: !state.pagamentos[chave] } });
         }
 
-        window.addEventListener('resize', verificarSetas);
-        window.addEventListener('click', function (e) {
-            if (!document.getElementById('btnAno').contains(e.target)) {
-                document.getElementById('dropdownAno').classList.remove('active');
-            }
-        });
-
-        // ===================== LANÇAMENTOS =====================
+        // ===================== RENDER LISTAS INDEPENDENTES =====================
         function renderSelectCategoria(valorSelecionado) {
             const select = document.getElementById('selectCategoriaLancamento');
             select.innerHTML = '';
             state.categorias.forEach(cat => {
                 const opt = document.createElement('option');
                 opt.value = cat.id;
-                opt.text = cat.nome + (cat.tipo === 'individual' ? ' (individual)' : '');
+                opt.text = cat.nome + (cat.tipo === 'individual' ? ' (individual)' : ' (compartilhada)');
                 select.appendChild(opt);
             });
             if (valorSelecionado) select.value = valorSelecionado;
         }
 
-        function renderLancamentos() {
-            const container = document.getElementById('listaLancamentosContainer');
+        function renderListasIndependentes() {
+            const containerT = document.getElementById('listaTerenceContainer');
+            const containerE = document.getElementById('listaEloaContainer');
+            
             const itens = lancamentosDoMes();
-            if (itens.length === 0) {
-                container.innerHTML = '<p class="estado-vazio">Nenhum lançamento neste mês. Toque em "+" para adicionar.</p>';
-                document.getElementById('totalMes').innerText = formatValor(0);
-                return;
-            }
-            let totalMes = 0;
-            container.innerHTML = itens.map(item => {
-                const cat = categoriaPorId(item.categoriaId) || { nome: 'Categoria removida', cor: '#cccccc', tipo: 'individual' };
-                totalMes += item.valor;
-                const tagPessoa = item.quemPagou === 'Terence'
-                    ? '<span class="tag-pessoa terence">Terence</span>'
-                    : '<span class="tag-pessoa eloa">Elóa</span>';
-                const tagTipo = cat.tipo === 'individual' ? '<span class="tag-pessoa individual">Individual</span>' : '';
+            
+            let htmlT = '', htmlE = '', subT = 0, subE = 0;
+
+            const moldarItem = (item, cat) => {
+                const tag = cat.tipo === 'individual' ? '<span class="tag-pessoa individual">Individual</span>' : '<span class="tag-pessoa compartilhado">Compartilhado</span>';
                 return `<div class="sub-card-item" data-id="${item.id}" onclick="editarLancamento(this)" style="border-left-color: ${cat.cor};">
                     <div class="item-detalhes">
                         <div class="item-nome">${escapeHtml(item.nome)}</div>
-                        <div class="item-meta">${escapeHtml(cat.nome)} ${tagPessoa}${tagTipo}</div>
+                        <div class="item-meta">${escapeHtml(cat.nome)} ${tag}</div>
                     </div>
                     <div class="item-preco">${formatValor(item.valor)}</div>
                 </div>`;
-            }).join('');
-            document.getElementById('totalMes').innerText = formatValor(totalMes);
+            };
+
+            itens.forEach(item => {
+                const cat = categoriaPorId(item.categoriaId) || { nome: 'Geral', cor: '#6e7570', tipo: 'individual' };
+                if (item.donoColuna === 'Terence') {
+                    htmlT += moldarItem(item, cat);
+                    subT += item.valor;
+                } else {
+                    htmlE += moldarItem(item, cat);
+                    subE += item.valor;
+                }
+            });
+
+            containerT.innerHTML = htmlT || '<p class="estado-vazio">Sem lançamentos para Terence.</p>';
+            containerE.innerHTML = htmlE || '<p class="estado-vazio">Sem lançamentos para Elóa.</p>';
+            
+            document.getElementById('totalTerence').innerText = formatValor(subT);
+            document.getElementById('totalEloa').innerText = formatValor(subE);
         }
 
-        function selecionarPessoaPagamento(pessoa) {
-            pessoaSelecionadaModal = pessoa;
-            document.getElementById('btnPessoaTerence').classList.toggle('active', pessoa === 'Terence');
-            document.getElementById('btnPessoaEloa').classList.toggle('active', pessoa === 'Eloa');
-        }
-
-        function openModalLancamento() {
+        // ===================== OPERAÇÕES DE LANÇAMENTO =====================
+        function openModalLancamento(coluna) {
             cardSendoEditadoId = null;
-            document.getElementById('titleModalLancamento').innerText = 'Novo Lançamento';
+            colunaAlvoCriacao = coluna;
+            document.getElementById('titleModalLancamento').innerText = `Novo Lançamento em ${coluna}`;
             document.getElementById('inputNomeLancamento').value = '';
             document.getElementById('inputValorLancamento').value = '';
             document.getElementById('btnExcluirLancamento').style.display = 'none';
             renderSelectCategoria();
-            selecionarPessoaPagamento('Terence');
             document.getElementById('modalLancamento').classList.add('active');
         }
 
@@ -777,227 +669,154 @@
             const item = state.lancamentos.find(i => String(i.id) === String(id));
             if (!item) return;
             cardSendoEditadoId = id;
-            document.getElementById('titleModalLancamento').innerText = 'Editar Lançamento';
+            colunaAlvoCriacao = item.donoColuna;
+            
+            // Se o gasto for compartilhado, o campo de valor mostra o "Bruto" para facilitar a reedição
+            const cat = categoriaPorId(item.categoriaId);
+            let valorExibir = item.valor;
+            if (cat && cat.tipo === 'compartilhada' && item.valorBrutoOrigem) {
+                valorExibir = item.valorBrutoOrigem;
+            }
+
+            document.getElementById('titleModalLancamento').innerText = `Editar Lançamento`;
             document.getElementById('inputNomeLancamento').value = item.nome;
-            document.getElementById('inputValorLancamento').value = item.valor;
+            document.getElementById('inputValorLancamento').value = valorExibir;
             document.getElementById('btnExcluirLancamento').style.display = 'inline-block';
             renderSelectCategoria(item.categoriaId);
-            selecionarPessoaPagamento(item.quemPagou === 'Eloa' ? 'Eloa' : 'Terence');
             document.getElementById('modalLancamento').classList.add('active');
         }
 
         async function salvarLancamento() {
             const nome = document.getElementById('inputNomeLancamento').value || 'Despesa';
             const categoriaId = document.getElementById('selectCategoriaLancamento').value;
-            const valor = parseFloat(document.getElementById('inputValorLancamento').value || 0);
-            const quemPagou = pessoaSelecionadaModal;
-            const payload = cardSendoEditadoId
-                ? { action: 'updateLancamento', data: { id: cardSendoEditadoId, nome, categoriaId, valor, quemPagou } }
-                : { action: 'addLancamento', data: { nome, categoriaId, valor, quemPagou, anoMes: chaveMesVisualizado() } };
+            const valorInformado = parseFloat(document.getElementById('inputValorLancamento').value || 0);
+            
+            const payload = {
+                action: cardSendoEditadoId ? 'updateLancamentoIndependente' : 'addLancamentoIndependente',
+                data: {
+                    id: cardSendoEditadoId,
+                    nome,
+                    categoriaId,
+                    valorBruto: valorInformado,
+                    colunaOrigem: colunaAlvoCriacao,
+                    anoMes: chaveMesVisualizado()
+                }
+            };
+            
             closeModal('modalLancamento');
             await enviarMutacao(payload);
         }
 
         async function excluirLancamento() {
-            if (!cardSendoEditadoId) return;
-            if (!confirm('Tem certeza que deseja excluir este lançamento?')) return;
-            const id = cardSendoEditadoId;
+            if (!cardSendoEditadoId || !confirm('Deseja excluir este lançamento? (Se for compartilhado, o par na outra coluna sumirá automaticamente)')) return;
             closeModal('modalLancamento');
-            await enviarMutacao({ action: 'deleteLancamento', data: { id } });
+            await enviarMutacao({ action: 'deleteLancamentoIndependente', data: { id: cardSendoEditadoId } });
         }
 
-        // ===================== CÁLCULO DE SALDO =====================
-        function recalcularSaldo() {
+        // ===================== MATEMÁTICA DE CONCILIAÇÃO FINAL =====================
+        function recalcularConciliacao() {
             const itens = lancamentosDoMes();
-            let saldoEloaDeveTerence = 0;
-            const porCategoria = {};
-            const individuais = { Terence: 0, Eloa: 0 };
-            let totalGeral = 0;
+            let quemPagouOQue = { Terence: 0, Eloa: 0 };
+            let responsabilidadeReal = { Terence: 0, Eloa: 0 };
 
             itens.forEach(item => {
                 const cat = categoriaPorId(item.categoriaId);
-                totalGeral += item.valor;
-                if (!cat) return;
+                
+                // Agregador de quem de fato tirou o dinheiro da carteira/banco
+                quemPagouOQue[item.quemCriou] += item.valor;
 
-                if (cat.tipo === 'individual') {
-                    individuais[item.quemPagou] = (individuais[item.quemPagou] || 0) + item.valor;
-                    return;
-                }
-
-                const pctTerence = cat.percentualTerence;
-                const parteTerence = item.valor * (pctTerence / 100);
-                const parteEloa = item.valor - parteTerence;
-
-                if (!porCategoria[item.categoriaId]) {
-                    porCategoria[item.categoriaId] = { nome: cat.nome, cor: cat.cor, total: 0, parteTerence: 0, parteEloa: 0 };
-                }
-                porCategoria[item.categoriaId].total += item.valor;
-                porCategoria[item.categoriaId].parteTerence += parteTerence;
-                porCategoria[item.categoriaId].parteEloa += parteEloa;
-
-                if (item.quemPagou === 'Terence') {
-                    saldoEloaDeveTerence += parteEloa;
+                if (!cat || cat.tipo === 'individual') {
+                    responsabilidadeReal[item.donoColuna] += item.valor;
                 } else {
-                    saldoEloaDeveTerence -= parteTerence;
+                    // Compartilhado: a responsabilidade já vem fracionada da replicação
+                    responsabilidadeReal[item.donoColuna] += item.valor;
                 }
             });
 
-            renderSaldo(porCategoria, individuais, saldoEloaDeveTerence);
-            document.getElementById('totalGeral').innerText = formatValor(totalGeral);
+            // Diferença de acerto: Quem pagou mais vs O que realmente devia
+            // Fórmula padrão de balanço de casal: (O que Terence pagou - O que Terence devia)
+            const saldoFinal = quemPagouOQue.Terence - responsabilidadeReal.Terence;
+
+            const detLabel = document.getElementById('detalheSaldo');
+            const resValor = document.getElementById('resultadoDiferenca');
+
+            if (saldoFinal > 0.005) {
+                detLabel.innerHTML = `Terence pagou mais do que devia. Elóa transfere a diferença.<br><b>Chave Pix: ${PIX_TERENCE}</b>`;
+                resValor.innerText = formatValor(saldoFinal);
+                resValor.style.color = '#86cf86';
+            } else if (saldoFinal < -0.005) {
+                detLabel.innerText = 'Elóa pagou mais do que devia. Terence transfere a diferença para equilibrar.';
+                resValor.innerText = formatValor(Math.abs(saldoFinal));
+                resValor.style.color = '#e67e7e';
+            } else {
+                detLabel.innerText = 'Tudo equilibrado! Vocês estão perfeitamente quites.';
+                resValor.innerText = 'Quites';
+                resValor.style.color = 'var(--txt-light)';
+            }
         }
 
-        function renderSaldo(porCategoria, individuais, saldoEloaDeveTerence) {
-            const container = document.getElementById('listaSaldoContainer');
-            const categorias = Object.values(porCategoria);
-            if (categorias.length === 0) {
-                container.innerHTML = '<p class="estado-vazio">Nenhuma despesa compartilhada neste mês.</p>';
-            } else {
-                container.innerHTML = categorias.map(c => `
-                    <div class="sub-card-item nao-clicavel" style="border-left-color: ${c.cor};">
-                        <div class="item-detalhes">
-                            <div class="item-nome">${escapeHtml(c.nome)}</div>
-                            <div class="item-meta">Terence ${formatValor(c.parteTerence)} · Elóa ${formatValor(c.parteEloa)}</div>
-                        </div>
-                        <div class="item-preco">${formatValor(c.total)}</div>
-                    </div>`).join('');
-            }
-
-            document.getElementById('totalIndividualTerence').innerText = formatValor(individuais.Terence || 0);
-            document.getElementById('totalIndividualEloa').innerText = formatValor(individuais.Eloa || 0);
-
-            const labelSaldo = document.getElementById('labelSaldo');
-            const valorSaldo = document.getElementById('valorSaldo');
-            const arredondado = Math.round(saldoEloaDeveTerence * 100) / 100;
-
-            if (arredondado > 0.005) {
-                labelSaldo.innerText = 'Elóa deve a Terence:';
-                valorSaldo.innerText = formatValor(arredondado);
-                valorSaldo.style.color = '#2e7d32';
-            } else if (arredondado < -0.005) {
-                labelSaldo.innerText = 'Terence deve a Elóa:';
-                valorSaldo.innerText = formatValor(Math.abs(arredondado));
-                valorSaldo.style.color = '#c0392b';
-            } else {
-                labelSaldo.innerText = 'Saldo:';
-                valorSaldo.innerText = 'Quites';
-                valorSaldo.style.color = 'var(--txt-dark)';
-            }
-
-            window._saldoEloaDeveTerence = arredondado;
-        }
-
-        // ===================== GERENCIAR CATEGORIAS =====================
-        function tipoTexto(tipo) { return tipo === 'individual' ? 'individual' : 'compartilhada'; }
-
+        // ===================== GERENCIAR CATEGORIAS MODAL =====================
         function linhaCategoriaHtml(cat) {
             const id = cat.id || ('novo-' + Math.random().toString(36).slice(2, 9));
             const ehIndividual = cat.tipo === 'individual';
             return `<div class="categoria-row" data-id="${id}" data-original-id="${cat.id || ''}">
                 <input type="color" class="cat-cor" value="${cat.cor || '#b4a8ff'}">
                 <input type="text" class="cat-nome" value="${escapeHtml(cat.nome || '')}" placeholder="Nome da categoria">
-                <select class="cat-tipo" onchange="atualizarVisibilidadePercentual(this)">
+                <select class="cat-tipo" onchange="this.nextElementSibling.style.visibility = (this.value==='individual'?'hidden':'visible')">
                     <option value="compartilhada" ${!ehIndividual ? 'selected' : ''}>Compartilhada</option>
                     <option value="individual" ${ehIndividual ? 'selected' : ''}>Individual</option>
                 </select>
                 <input type="number" class="cat-percentual" min="0" max="100" value="${cat.percentualTerence != null ? cat.percentualTerence : 50}" style="${ehIndividual ? 'visibility:hidden;' : ''}">
-                <span class="pct-label" style="${ehIndividual ? 'visibility:hidden;' : ''}">% Terence</span>
-                <button class="btn-remover-categoria" onclick="this.closest('.categoria-row').remove()" title="Remover">×</button>
+                <span class="pct-label" style="${ehIndividual ? 'visibility:hidden;' : ''}">% Proporção</span>
+                <button class="btn-remover-categoria" onclick="this.closest('.categoria-row').remove()">×</button>
             </div>`;
         }
 
-        function atualizarVisibilidadePercentual(selectEl) {
-            const row = selectEl.closest('.categoria-row');
-            const ehIndividual = selectEl.value === 'individual';
-            row.querySelector('.cat-percentual').style.visibility = ehIndividual ? 'hidden' : 'visible';
-            row.querySelector('.pct-label').style.visibility = ehIndividual ? 'hidden' : 'visible';
-        }
-
         function adicionarLinhaCategoria() {
-            document.getElementById('listaCategoriasForm').insertAdjacentHTML('beforeend',
-                linhaCategoriaHtml({ tipo: 'compartilhada', percentualTerence: 50, cor: '#b4a8ff' }));
+            document.getElementById('listaCategoriasForm').insertAdjacentHTML('beforeend', linhaCategoriaHtml({ tipo: 'compartilhada', percentualTerence: 50, cor: '#b4a8ff' }));
         }
 
         function openModalCategorias() {
-            const container = document.getElementById('listaCategoriasForm');
-            container.innerHTML = state.categorias.map(linhaCategoriaHtml).join('');
+            document.getElementById('listaCategoriasForm').innerHTML = state.categorias.map(linhaCategoriaHtml).join('');
             document.getElementById('modalCategorias').classList.add('active');
         }
 
         async function salvarCategorias() {
             const linhas = [...document.querySelectorAll('#listaCategoriasForm .categoria-row')];
-            const categorias = linhas.map(row => {
-                const idOriginal = row.getAttribute('data-original-id');
-                return {
-                    id: idOriginal || null,
-                    nome: row.querySelector('.cat-nome').value || 'Categoria',
-                    cor: row.querySelector('.cat-cor').value,
-                    tipo: row.querySelector('.cat-tipo').value,
-                    percentualTerence: parseFloat(row.querySelector('.cat-percentual').value || 50)
-                };
-            });
+            const categorias = linhas.map(row => ({
+                id: row.getAttribute('data-original-id') || null,
+                nome: row.querySelector('.cat-nome').value || 'Categoria',
+                cor: row.querySelector('.cat-cor').value,
+                tipo: row.querySelector('.cat-tipo').value,
+                percentualTerence: parseFloat(row.querySelector('.cat-percentual').value || 50)
+            }));
             closeModal('modalCategorias');
             await enviarMutacao({ action: 'syncCategorias', data: categorias });
         }
 
-        // ===================== UTIL MODAL =====================
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
-        // ===================== ENVIO WHATSAPP =====================
-        function montarMensagemWhatsapp() {
-            const mesNome = NOMES_MESES_COMPLETOS[mesVisualizado.mes];
-            const ano = mesVisualizado.ano;
-            const itens = lancamentosDoMes();
-
-            let msg = `📋 *Resumo ${mesNome}/${ano} — Terence & Elóa*\n\n`;
-
-            const compartilhadas = itens.filter(i => { const c = categoriaPorId(i.categoriaId); return c && c.tipo !== 'individual'; });
-            const individuais = itens.filter(i => { const c = categoriaPorId(i.categoriaId); return c && c.tipo === 'individual'; });
-
-            msg += `*Despesas Compartilhadas*\n`;
-            if (compartilhadas.length === 0) {
-                msg += `Sem lançamentos no período.\n`;
-            } else {
-                compartilhadas.forEach(item => {
-                    const cat = categoriaPorId(item.categoriaId);
-                    msg += `• ${item.nome} (${cat.nome}) — ${formatValor(item.valor)} — pago por ${item.quemPagou === 'Eloa' ? 'Elóa' : 'Terence'}\n`;
-                });
-            }
-
-            msg += `\n*Despesas Individuais*\n`;
-            if (individuais.length === 0) {
-                msg += `Sem lançamentos no período.\n`;
-            } else {
-                individuais.forEach(item => {
-                    msg += `• ${item.nome} — ${formatValor(item.valor)} (${item.quemPagou === 'Eloa' ? 'Elóa' : 'Terence'})\n`;
-                });
-            }
-
-            msg += `\n💰 *Total geral do mês:* ${document.getElementById('totalGeral').innerText}\n\n`;
-
-            const saldo = window._saldoEloaDeveTerence || 0;
-            if (saldo > 0.005) {
-                msg += `*Saldo:* Elóa deve ${formatValor(saldo)} para Terence\n`;
-                msg += `PIX: ${PIX_TERENCE}`;
-            } else if (saldo < -0.005) {
-                msg += `*Saldo:* Terence deve ${formatValor(Math.abs(saldo))} para Elóa`;
-            } else {
-                msg += `*Saldo:* Estão quites este mês 🎉`;
-            }
-
-            return msg;
-        }
-
+        // ===================== WHATSAPP COMPILADOR =====================
         function enviarWhatsapp() {
-            const mensagem = montarMensagemWhatsapp();
-            const url = `https://wa.me/${NUMERO_WHATSAPP_ELOA}?text=${encodeURIComponent(mensagem)}`;
-            window.open(url, '_blank');
+            const mesNome = NOMES_MESES_COMPLETOS[mesVisualizado.mes];
+            const itens = lancamentosDoMes();
+            let msg = `📋 *Resumo Financeiro — ${mesNome}/${mesVisualizado.ano}* 📋\n\n`;
+
+            msg += `*PAGO POR TERENCE:*\n`;
+            itens.filter(i => i.quemCriou === 'Terence').forEach(i => msg += `• ${i.nome}: ${formatValor(i.valor)} (${i.donoColuna === 'Terence'?'pessoal':'compartilhado'})\n`);
+            
+            msg += `\n*PAGO POR ELÓA:*\n`;
+            itens.filter(i => i.quemCriou === 'Eloa').forEach(i => msg += `• ${i.nome}: ${formatValor(i.valor)} (${i.donoColuna === 'Eloa'?'pessoal':'compartilhado'})\n`);
+
+            const resValor = document.getElementById('resultadoDiferenca').innerText;
+            const detLabel = document.getElementById('detalheSaldo').innerText.split('\n')[0];
+            msg += `\n💰 *CONCILIAÇÃO FINAL:* ${resValor}\n_${detLabel}_`;
+
+            window.open(`https://wa.me/${NUMERO_WHATSAPP_ELOA}?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
-        // ===================== INICIALIZAÇÃO =====================
-        window.addEventListener('load', () => {
-            verificarSetas();
-            carregarDados();
-        });
+        window.addEventListener('load', () => { verificarSetas(); carregarDados(); });
+        window.addEventListener('click', e => { if (!document.getElementById('btnAno').contains(e.target)) document.getElementById('dropdownAno').classList.remove('active'); });
     </script>
 </body>
 </html>
