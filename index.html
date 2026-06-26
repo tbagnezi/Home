@@ -480,7 +480,7 @@
         const API_URL = 'https://script.google.com/macros/s/AKfycbwDUrKSHPdn22VRRy-lGXWXqBQ4wD7S6zDT0ygsDvIki_6wCcXYZqr7KGAni3E2AKfoXA/exec';
 
         const NUMERO_WHATSAPP_ELOA = '5554991265796';
-        const PIX_TERENCE = '00129539031';
+        const PIX_TERENCE = 'terenceagnezi@gmail.com';
 
         const NOMES_MESES_COMPLETOS = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
 
@@ -883,8 +883,7 @@
             });
 
             const resValor = document.getElementById('resultadoDiferenca').innerText;
-            const detLabel = document.getElementById('detalheSaldo').innerText.split('\n')[0];
-            msg += `\n💰 *TOTAL DEVIDO:* ${resValor}\n_${detLabel}_\n*Chave Pix: ${PIX_TERENCE}*`;
+            msg += `\n💰 *TOTAL DEVIDO:* ${resValor}\n\nPIX: ${PIX_TERENCE}`;
 
             window.open(`https://wa.me/${NUMERO_WHATSAPP_ELOA}?text=${encodeURIComponent(msg)}`, '_blank');
         }
