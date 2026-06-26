@@ -882,6 +882,10 @@
                 msg += linha + '\n';
             });
 
+            const resValor = document.getElementById('resultadoDiferenca').innerText;
+            const detLabel = document.getElementById('detalheSaldo').innerText.split('\n')[0];
+            msg += `\n💰 *TOTAL DEVIDO:* ${resValor}\n_${detLabel}_\n*Chave Pix: ${PIX_TERENCE}*`;
+
             window.open(`https://wa.me/${NUMERO_WHATSAPP_ELOA}?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
