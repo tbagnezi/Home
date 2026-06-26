@@ -444,6 +444,19 @@
         </div>
     </div>
 
+    <div class="modal-overlay" id="modalConfirmarExclusao">
+        <div class="modal-box" style="max-width: 360px;">
+            <h3>Excluir lançamento?</h3>
+            <p style="font-size: 14px; color: var(--txt-muted); margin-bottom: 4px; line-height: 1.4;">
+                Essa ação não pode ser desfeita.
+            </p>
+            <div class="modal-actions">
+                <button class="btn-modal cancelar" onclick="cancelarExclusao()">Cancelar</button>
+                <button class="btn-modal excluir" style="margin-right: 0;" onclick="confirmarExclusaoDefinitiva()">Excluir</button>
+            </div>
+        </div>
+    </div>
+
     <div class="modal-overlay" id="modalCategorias">
         <div class="modal-box largo">
             <h3>Gerenciar Categorias</h3>
@@ -719,10 +732,20 @@
             await enviarMutacao(payload);
         }
 
-        async function excluirLancamento() {
-            if (!cardSendoEditadoId || !confirm('Deseja excluir este lançamento?')) return;
+        function excluirLancamento() {
+            if (!cardSendoEditadoId) return;
             closeModal('modalLancamento');
+            document.getElementById('modalConfirmarExclusao').classList.add('active');
+        }
+
+        function cancelarExclusao() {
+            closeModal('modalConfirmarExclusao');
+        }
+
+        async function confirmarExclusaoDefinitiva() {
+            closeModal('modalConfirmarExclusao');
             await enviarMutacao({ action: 'deleteLancamentoIndependente', data: { id: cardSendoEditadoId } });
+            cardSendoEditadoId = null;
         }
 
         // ===================== MATEMÁTICA DE CONCILIAÇÃO FINAL =====================
