@@ -472,20 +472,27 @@
 
         // ===================== ESTADO GLOBAL =====================
         let state = {
-            lancamentos: [], // Estrutura: { id, paiId, nome, categoriaId, valor, quemCriou, donoColuna, anoMes }
+            lancamentos: [], 
             categorias: [],   
             pagamentos: {}
         };
 
         let cardSendoEditadoId = null;
-        let colunaAlvoCriacao = 'Terence'; // Determina de qual lado o "+" foi clicado
+        let colunaAlvoCriacao = 'Terence'; 
 
         const _hoje = new Date();
         let mesVisualizado = { ano: _hoje.getFullYear(), mes: _hoje.getMonth() };
 
         function chaveMesVisualizado() { return `${mesVisualizado.ano}-${mesVisualizado.mes}`; }
         function categoriaPorId(id) { return state.categorias.find(c => String(c.id) === String(id)); }
-        function lancamentosDoMes() { return state.lancamentos.filter(i => i.anoMes === chaveMesVisualizado()); }
+        
+        function lancamentosDoMes() {
+            const chaveAlvo = String(chaveMesVisualizado()).trim();
+            return state.lancamentos.filter(i => {
+                if (!i.anoMes) return false;
+                return String(i.anoMes).trim() === chaveAlvo;
+            });
+        }
 
         // ===================== UTILITÁRIOS =====================
         function formatValor(num) {
@@ -504,7 +511,7 @@
             document.getElementById('loadingOverlay').style.display = visivel ? 'flex' : 'none';
         }
 
-        // ===================== COMUNICAÇÃO COM O WEB APP (APPS SCRIPT) =====================
+        // ===================== COMUNICAÇÃO COM O WEB APP =====================
         async function carregarDados() {
             if (!API_URL || API_URL.indexOf('COLE_AQUI') !== -1) {
                 document.getElementById('avisoConfig').style.display = 'block';
@@ -537,8 +544,14 @@
         }
 
         function aplicarDataset(dados) {
-            state.lancamentos = (dados.lancamentos || []).map(i => ({ ...i, valor: Number(i.valor) }));
-            state.categorias = (dados.categorias || []).map(c => ({ ...c, percentualTerence: Number(c.percentualTerence) }));
+            state.lancamentos = (dados.lancamentos || []).map(i => ({ 
+                ...i, 
+                valor: Number(i.valor || 0) 
+            }));
+            state.categorias = (dados.categorias || []).map(c => ({ 
+                ...c, 
+                percentualTerence: Number(c.percentualTerence || 50) 
+            }));
             state.pagamentos = dados.pagamentos || {};
             renderTudo();
         }
@@ -671,7 +684,6 @@
             cardSendoEditadoId = id;
             colunaAlvoCriacao = item.donoColuna;
             
-            // Se o gasto for compartilhado, o campo de valor mostra o "Bruto" para facilitar a reedição
             const cat = categoriaPorId(item.categoriaId);
             let valorExibir = item.valor;
             if (cat && cat.tipo === 'compartilhada' && item.valorBrutoOrigem) {
@@ -708,7 +720,7 @@
         }
 
         async function excluirLancamento() {
-            if (!cardSendoEditadoId || !confirm('Deseja excluir este lançamento? (Se for compartilhado, o par na outra coluna sumirá automaticamente)')) return;
+            if (!cardSendoEditadoId || !confirm('Deseja excluir este lançamento?')) return;
             closeModal('modalLancamento');
             await enviarMutacao({ action: 'deleteLancamentoIndependente', data: { id: cardSendoEditadoId } });
         }
@@ -721,20 +733,10 @@
 
             itens.forEach(item => {
                 const cat = categoriaPorId(item.categoriaId);
-                
-                // Agregador de quem de fato tirou o dinheiro da carteira/banco
                 quemPagouOQue[item.quemCriou] += item.valor;
-
-                if (!cat || cat.tipo === 'individual') {
-                    responsabilidadeReal[item.donoColuna] += item.valor;
-                } else {
-                    // Compartilhado: a responsabilidade já vem fracionada da replicação
-                    responsabilidadeReal[item.donoColuna] += item.valor;
-                }
+                responsabilidadeReal[item.donoColuna] += item.valor;
             });
 
-            // Diferença de acerto: Quem pagou mais vs O que realmente devia
-            // Fórmula padrão de balanço de casal: (O que Terence pagou - O que Terence devia)
             const saldoFinal = quemPagouOQue.Terence - responsabilidadeReal.Terence;
 
             const detLabel = document.getElementById('detalheSaldo');
