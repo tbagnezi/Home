@@ -250,12 +250,21 @@
             align-items: center;
             min-height: 52px;
             border-left: 5px solid transparent;
-            cursor: pointer;
+            cursor: grab;
+            touch-action: none;
+            user-select: none;
             transition: transform 0.15s ease, box-shadow 0.15s ease;
         }
         .sub-card-item:hover {
             transform: translateY(-1px);
             box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+        }
+        .sub-card-item.arrastando {
+            cursor: grabbing;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.14);
+            transition: none;
+            z-index: 50;
+            position: relative;
         }
         .item-detalhes { pointer-events: none; }
         .item-detalhes .item-nome { font-weight: 600; font-size: 14px; color: var(--txt-dark); }
@@ -660,7 +669,11 @@
             const containerT = document.getElementById('listaTerenceContainer');
             const containerE = document.getElementById('listaEloaContainer');
             
-            const itens = lancamentosDoMes();
+            const itens = lancamentosDoMes().slice().sort((a, b) => {
+                const oa = (a.ordem === '' || a.ordem == null || isNaN(Number(a.ordem))) ? Infinity : Number(a.ordem);
+                const ob = (b.ordem === '' || b.ordem == null || isNaN(Number(b.ordem))) ? Infinity : Number(b.ordem);
+                return oa - ob;
+            });
             
             let htmlT = '', htmlE = '', subT = 0, subE = 0;
 
@@ -713,6 +726,7 @@
         }
 
         function editarLancamento(elemento) {
+            if (elemento.dataset.suprimirClick) return;
             const id = elemento.getAttribute('data-id');
             const item = state.lancamentos.find(i => String(i.id) === String(id));
             if (!item) return;
@@ -888,7 +902,86 @@
             window.open(`https://wa.me/${NUMERO_WHATSAPP_ELOA}?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
-        window.addEventListener('load', () => { verificarSetas(); carregarDados(); });
+        // ===================== ARRASTAR PARA REORDENAR =====================
+        // Funciona com mouse e toque (Pointer Events). Ao soltar, salva a nova
+        // ordem de todos os cards daquela coluna no back-end (coluna "ordem"
+        // na planilha), pra persistir mesmo recarregando a página.
+        function initArrastoColunas() {
+            ['listaTerenceContainer', 'listaEloaContainer'].forEach(containerId => {
+                const containerEl = document.getElementById(containerId);
+                containerEl.addEventListener('pointerdown', e => {
+                    const cardEl = e.target.closest('.sub-card-item');
+                    if (!cardEl) return;
+                    iniciarArrasto(e, cardEl, containerEl);
+                });
+            });
+        }
+
+        function iniciarArrasto(e, cardEl, containerEl) {
+            if (e.pointerType === 'mouse' && e.button !== 0) return;
+            e.preventDefault();
+            let referenciaY = e.clientY;
+            let moveu = false;
+
+            try { cardEl.setPointerCapture(e.pointerId); } catch (err) {}
+
+            function onMove(ev) {
+                if (ev.pointerId !== e.pointerId) return;
+                const dy = ev.clientY - referenciaY;
+                if (!moveu && Math.abs(dy) > 6) { moveu = true; cardEl.classList.add('arrastando'); }
+                if (!moveu) return;
+                cardEl.style.transform = `translateY(${dy}px)`;
+
+                const irmaos = Array.from(containerEl.querySelectorAll('.sub-card-item')).filter(el => el !== cardEl);
+                for (const irmao of irmaos) {
+                    const r = irmao.getBoundingClientRect();
+                    const meio = r.top + r.height / 2;
+                    if (ev.clientY < meio && irmao.nextElementSibling === cardEl) {
+                        containerEl.insertBefore(cardEl, irmao);
+                        referenciaY = ev.clientY;
+                        cardEl.style.transform = 'translateY(0px)';
+                        break;
+                    } else if (ev.clientY > meio && irmao.previousElementSibling === cardEl) {
+                        containerEl.insertBefore(cardEl, irmao.nextElementSibling);
+                        referenciaY = ev.clientY;
+                        cardEl.style.transform = 'translateY(0px)';
+                        break;
+                    }
+                }
+            }
+
+            function onUp(ev) {
+                if (ev.pointerId !== e.pointerId) return;
+                try { cardEl.releasePointerCapture(e.pointerId); } catch (err) {}
+                cardEl.removeEventListener('pointermove', onMove);
+                cardEl.removeEventListener('pointerup', onUp);
+                cardEl.removeEventListener('pointercancel', onUp);
+                cardEl.classList.remove('arrastando');
+                cardEl.style.transform = '';
+
+                if (moveu) {
+                    cardEl.dataset.suprimirClick = '1';
+                    setTimeout(() => { delete cardEl.dataset.suprimirClick; }, 80);
+                    const ids = Array.from(containerEl.querySelectorAll('.sub-card-item')).map(el => el.getAttribute('data-id'));
+                    salvarNovaOrdem(ids);
+                }
+            }
+
+            cardEl.addEventListener('pointermove', onMove);
+            cardEl.addEventListener('pointerup', onUp);
+            cardEl.addEventListener('pointercancel', onUp);
+        }
+
+        async function salvarNovaOrdem(ids) {
+            // Atualiza localmente na hora, sem esperar a resposta do servidor
+            ids.forEach((id, idx) => {
+                const item = state.lancamentos.find(i => String(i.id) === String(id));
+                if (item) item.ordem = idx;
+            });
+            await enviarMutacao({ action: 'reordenarLancamentos', data: { ids } });
+        }
+
+        window.addEventListener('load', () => { verificarSetas(); carregarDados(); initArrastoColunas(); });
         window.addEventListener('click', e => { if (!document.getElementById('btnAno').contains(e.target)) document.getElementById('dropdownAno').classList.remove('active'); });
     </script>
 </body>
