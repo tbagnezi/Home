@@ -617,9 +617,17 @@
             document.querySelectorAll('.aba-mes').forEach(btn => {
                 const idx = parseInt(btn.getAttribute('data-mes'), 10);
                 btn.classList.remove('pago', 'aberto', 'atual', 'futuro', 'selecionado');
-                let status = (mesVisualizado.ano === hoje.getFullYear() && idx === hoje.getMonth()) ? 'atual' : 
-                             (mesVisualizado.ano < hoje.getFullYear() || (mesVisualizado.ano === hoje.getFullYear() && idx < hoje.getMonth())) ? 
-                             (state.pagamentos[`${mesVisualizado.ano}-${idx}`] ? 'pago' : 'aberto') : 'futuro';
+
+                const pago = !!state.pagamentos[`${mesVisualizado.ano}-${idx}`];
+                const ehAtual = (mesVisualizado.ano === hoje.getFullYear() && idx === hoje.getMonth());
+                const ehFuturo = (mesVisualizado.ano > hoje.getFullYear()) || (mesVisualizado.ano === hoje.getFullYear() && idx > hoje.getMonth());
+
+                let status;
+                if (pago) status = 'pago';
+                else if (ehAtual) status = 'atual';
+                else if (ehFuturo) status = 'futuro';
+                else status = 'aberto';
+
                 btn.classList.add(status);
                 if (idx === mesVisualizado.mes) { btn.classList.add('selecionado'); botaoFoco = btn; }
             });
